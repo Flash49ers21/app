@@ -9,7 +9,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ffffff">
 
-    <!-- Optional basic styling -->
+    <!-- Styling -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,20 +18,26 @@
             margin: 0;
             padding: 0;
         }
+
+        #introVideo, #mainContent {
+            transition: opacity 1s ease;
+        }
+
         #mainContent {
             display: none;
+            opacity: 0;
         }
     </style>
 </head>
 <body>
 
     <!-- Video animation -->
-    <video id="introVideo" autoplay muted playsinline style="width:100%; max-width:400px; display:block; margin: 20px auto;">
+    <video id="introVideo" autoplay muted playsinline style="width:100%; max-width:400px; display:block; margin: 20px auto; opacity:1;">
         <source src="animation/Animation-Lifeway-Logo.mp4" type="video/mp4">
         Video not found!
     </video>
 
-    <!-- Main content hidden until video ends -->
+    <!-- Main content hidden initially -->
     <div id="mainContent">
         <img src="icons/icon-192.png" alt="App Logo" style="width:150px; display:block; margin: 20px auto;">
         <h1>Hello 👋</h1>
@@ -48,17 +54,30 @@
         }
     </script>
 
-    <!-- Show main content after video ends -->
+    <!-- Fade transition and slow video -->
     <script>
         const video = document.getElementById('introVideo');
         const content = document.getElementById('mainContent');
 
+        // Slow down video to 60% speed
+        video.playbackRate = 0.6;
+
         video.onended = () => {
-            video.style.display = 'none';
-            content.style.display = 'block';
+            // Fade out video
+            video.style.opacity = 0;
+
+            // After fade, hide video and show main content
+            setTimeout(() => {
+                video.style.display = 'none';
+                content.style.display = 'block';
+
+                // Fade in main content
+                setTimeout(() => {
+                    content.style.opacity = 1;
+                }, 50); // small delay to trigger transition
+            }, 1000); // match transition duration
         };
     </script>
 
 </body>
 </html>
-
