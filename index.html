@@ -30,12 +30,27 @@
     <!-- Embed the website -->
     <iframe id="iframeContainer" src="https://lifewaych.com/"></iframe>
 
-    <!-- Service Worker registration -->
+    <!-- Service Worker registration with auto-update -->
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js').then(reg => {
                 console.log('Service Worker Registered');
-                reg.update();
+
+                // Force the service worker to check for updates
+                if (reg.update) {
+                    reg.update();
+                }
+
+                // Listen for updates and reload the app automatically
+                reg.onupdatefound = () => {
+                    const newWorker = reg.installing;
+                    newWorker.onstatechange = () => {
+                        if (newWorker.state === 'activated') {
+                            // Reload the app to show latest version
+                            window.location.reload();
+                        }
+                    };
+                };
             });
         }
     </script>
