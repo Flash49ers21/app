@@ -1,38 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My Neutral App</title>
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#000000" />
-  <style>
-    html,body { height:100%; margin:0; }
-    body {
-      font-family:system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:#ffffff;
-      color:#111;
-      font-size:1.6rem;
-    }
-    .wrap { text-align:center; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lifeway App</title>
+
+    <!-- PWA manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Optional: basic styles -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <img src="icons/icon-192.png" alt="App Logo" style="width:150px; display:block; margin: 20px auto;">
-    <h1>Hello 👋</h1>
-    <p>This is the first version of your app.</p>
-  </div>
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').then(() => {
-        console.log('Service Worker Registered');
-      });
-    }
-  </script>
+    <!-- Video animation -->
+    <video id="introVideo" autoplay muted playsinline style="width:100%; max-width:400px; display:block; margin: 20px auto;">
+        <source src="animation/Animation-Lifeway-Logo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Main content hidden until video ends -->
+    <div id="mainContent" style="display:none;">
+        <img src="icons/icon-192.png" alt="App Logo" style="width:150px; display:block; margin: 20px auto;">
+        <h1>Hello 👋</h1>
+        <p>This is the first version of your app.</p>
+    </div>
+
+    <!-- Service Worker registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+            .then(() => console.log('Service Worker Registered'));
+        }
+    </script>
+
+    <!-- Show main content after video ends -->
+    <script>
+        const video = document.getElementById('introVideo');
+        const content = document.getElementById('mainContent');
+
+        video.onended = () => {
+            video.style.display = 'none';
+            content.style.display = 'block';
+        };
+    </script>
+
 </body>
 </html>
+
