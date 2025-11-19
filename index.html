@@ -9,7 +9,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ffffff">
 
-    <!-- Optional: basic styles -->
+    <!-- Optional basic styling -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,6 +18,9 @@
             margin: 0;
             padding: 0;
         }
+        #mainContent {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -25,11 +28,11 @@
     <!-- Video animation -->
     <video id="introVideo" autoplay muted playsinline style="width:100%; max-width:400px; display:block; margin: 20px auto;">
         <source src="animation/Animation-Lifeway-Logo.mp4" type="video/mp4">
-        Your browser does not support the video tag.
+        Video not found!
     </video>
 
     <!-- Main content hidden until video ends -->
-    <div id="mainContent" style="display:none;">
+    <div id="mainContent">
         <img src="icons/icon-192.png" alt="App Logo" style="width:150px; display:block; margin: 20px auto;">
         <h1>Hello 👋</h1>
         <p>This is the first version of your app.</p>
@@ -38,8 +41,10 @@
     <!-- Service Worker registration -->
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js')
-            .then(() => console.log('Service Worker Registered'));
+            navigator.serviceWorker.register('/sw.js').then(reg => {
+                console.log('Service Worker Registered');
+                reg.update(); // Force check for updates
+            });
         }
     </script>
 
